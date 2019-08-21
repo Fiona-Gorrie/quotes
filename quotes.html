@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+        <head>
+                <link rel="stylesheet" href="quotes_styles.css">
+                <title>Welcome to the quote generator!</title>
+        </head>
+<body>
+    <form id='login-form'>
+        <h2>Enter an author for an inspirational quote.</h2>
+        <table>
+            <tr>
+                <td>Author</td>
+                <td><input type="text" name="authorname" /></td>
+            </tr>
+            <tr>
+                <td>Get Random Quote</td>
+                <td><input type="submit"/></td>
+            </tr>
+        </table>
+    </form>
+    <br>
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRt6gPiPMOcMzN8w69BYRJiAVp5nIdYk-eFkRwAjTQm4fi538iK" alt="Ocean View">
+    <p id="random-quote"></p>
+    <p id="author"></p>
+</body>
+</html>
+
+<script type="text/javascript">
+
+//create element out of the html form, accessing it through it's id 'id-form'
+const loginForm = document.getElementById('login-form')
+
+//listen out for the 'submit' button being pushed and creat a function that...
+loginForm.addEventListener('submit', evt => {
+    //The preventDefault() method cancels the event if it is cancelable, 
+    ///meaning that the default action that belongs to the event will not occur.
+    //Clicking on a "Submit" button, prevent it from submitting a form
+    evt.preventDefault();
+    //The Document method querySelector() returns the first Element within the document 
+    //that matches the specified selector, or group of selectors. If no matches are found, 
+    //null is returned.
+    const authorSearch = loginForm.querySelector('input[type="text"]').value;
+    //create element out of 'random-quote' <p> element
+    const quote = document.getElementById('random-quote');
+    //create element out of 'author' <p> element
+    const author = document.getElementById('author');
+    //fetch this site
+    fetch(`https://api.quotable.io/quotes?author=${authorSearch}`)
+        .then(response => response.json())
+        .then(data => {
+            //innerHTML gets or sets the HTML or XML markup contained within the element.
+            //returns the content into the 'quote' <p>
+            quote.innerHTML = data.results[0].content;
+            //returns the content into the 'author' <p>
+            author.innerHTML = data.results[0].author;
+        })
+        .catch(error => { quote.innerHTML = "Can't find a quote by that author, please try again."; } );
+        
+});
+</script>
