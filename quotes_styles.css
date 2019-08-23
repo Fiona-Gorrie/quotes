@@ -17,3 +17,8 @@ img {
     margin-right: auto;
     width: 70%;
 }
+}
+img.resize {
+    max-width:80%;
+    max-height:50%;
+  }
